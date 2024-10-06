@@ -29,7 +29,6 @@ public class Main {
         grid = new int[R+3][C+1];
 
         // 각 정령의 개수만큼 골렘 진행하기
-        int cnt = 0;
         for(int i = 0; i < K; i++) {
             st = new StringTokenizer(br.readLine());
             int startCol = Integer.parseInt(st.nextToken()); // 출발하는 열
@@ -40,6 +39,8 @@ public class Main {
 
             // 골렘 이동
             moveGolem(golem);
+
+            // printForest();
             
         }
         System.out.println(result);
@@ -54,9 +55,6 @@ public class Main {
         boolean isEnd = false;
         // 끝날때까지 진행
         while(!isEnd) {
-            // 우선 다음 남쪽 위치 탐색
-            
-            // 더 이상 남쪽으로 못 가는 경우 탐색함
 
             // 1. 남쪽으로 이동 
             if(canMoveDown(golem)) {
@@ -82,7 +80,7 @@ public class Main {
 
 
             // System.out.println(golem.toString());
-            sb = new StringBuilder();
+            // sb = new StringBuilder();
         }
 
         // 반복문이 다 끝났으면, 골렘의 위치를 박제시킨다.
@@ -98,7 +96,10 @@ public class Main {
 
             // BFS탐색으로 가장 아래쪽에 있는 row 구하기
             int maxRow = findMaxRow(golem) - 2;
+            // System.out.printf("now : %d\n", maxRow);
+            
             result += maxRow;
+            // System.out.printf("누적 : %d\n", result);
         }
 
         
@@ -121,12 +122,13 @@ public class Main {
 
         // 우선 방문처리 해주고 
         visited[y][x] = true;
-        q.add(new int[] {y, x});
+        q.add(new int[] {y, x, golemNum});
 
         while(!q.isEmpty()) {
             int[] tmp = q.poll();
             int prevY = tmp[0];
             int prevX = tmp[1];
+            int nowNum = tmp[2];
 
             // 4방탐색 => 위로 가서 탐색할 수도 있음
             for(int i = 0; i < 4; i++) {
@@ -141,18 +143,20 @@ public class Main {
                 if(forest[ny][nx] == 0) continue;
                 
                 // 1. 지금 위치한 골렘과 동일한 위치이면
-                if(grid[ny][nx] == golemNum) {
+                if(grid[ny][nx] == nowNum) {
                     visited[ny][nx] = true;
-                    q.offer(new int[] {ny, nx});
+                    q.offer(new int[] {ny, nx, nowNum});
                     maxRow = Math.max(maxRow, ny);
                 }
                 // 2. 다른 골렘이라도 이전 위치에 출구가 있으면
-                else if (forest[prevY][prevX] == 2) {
+                else if (grid[ny][nx] != nowNum && forest[prevY][prevX] == 2) {
                     visited[ny][nx] = true;
-                    q.offer(new int[] {ny, nx});
+                    nowNum = grid[ny][nx];
+                    q.offer(new int[] {ny, nx, nowNum});
                     maxRow = Math.max(maxRow, ny);
+
                     // 골렘 갱신
-                    golemNum = grid[ny][nx];
+                    
                 }
 
             }
@@ -384,5 +388,7 @@ public class Main {
             }
             System.out.println();
         }
+
+        System.out.println("=========");
     }
 }
