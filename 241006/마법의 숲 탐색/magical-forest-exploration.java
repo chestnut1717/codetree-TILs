@@ -14,7 +14,6 @@ public class Main {
 
     static int result = 0; // 행 더하기
 
-    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
@@ -39,8 +38,6 @@ public class Main {
 
             // 골렘 이동
             moveGolem(golem);
-
-            // printForest();
             
         }
         System.out.println(result);
@@ -78,9 +75,6 @@ public class Main {
                 isEnd = true;
             }
 
-
-            // System.out.println(golem.toString());
-            // sb = new StringBuilder();
         }
 
         // 반복문이 다 끝났으면, 골렘의 위치를 박제시킨다.
@@ -96,10 +90,8 @@ public class Main {
 
             // BFS탐색으로 가장 아래쪽에 있는 row 구하기
             int maxRow = findMaxRow(golem) - 2;
-            // System.out.printf("now : %d\n", maxRow);
             
             result += maxRow;
-            // System.out.printf("누적 : %d\n", result);
         }
 
         
@@ -365,30 +357,7 @@ public class Main {
             this.exitDir = exitDir;
         }
 
-        @Override
-        public String toString(){
-            return sb.append("up : ").append(up[0]).append(",").append(up[1]).append('\n').
-                    append("right : ").append(right[0]).append(",").append(right[1]).append('\n').
-                    append("down : ").append(down[0]).append(",").append(down[1]).append('\n').
-                    append("left : ").append(left[0]).append(",").append(left[1]).append('\n').
-                    append("center : ").append(center[0]).append(",").append(center[1]).append('\n').
-                    append("exitDir : ").append(exitDir).append('\n').toString();
-
-
-
-
-        }
 
     }
 
-    static void printForest() {
-        for(int i = 0; i < R+3; i++) {
-            for(int j = 0; j < C+1; j++) {
-                System.out.printf("%d ", forest[i][j]);
-            }
-            System.out.println();
-        }
-
-        System.out.println("=========");
-    }
 }
